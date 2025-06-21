@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('logo')->nullable();
             $table->text('description')->nullable();
+            $table->json('contact_link')->nullable(); // Ex: Discord, Telegram, etc avec leurs liens.
             $table->timestamps();
         });
     }

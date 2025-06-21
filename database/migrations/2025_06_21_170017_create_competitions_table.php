@@ -19,7 +19,9 @@ return new class extends Migration
             $table->dateTime('date');
             $table->boolean('is_online')->default(true);
             $table->string('reward')->nullable();
-            $table->enum('status', ['upcoming', 'ongoing', 'completed'])->default('upcoming');
+            $table->enum('status', ['upcoming', 'ongoing', 'completed', 'cancel'])->default('upcoming');
+            $table->json('contact_link')->nullable(); // Ex: Discord, Telegram, etc avec leurs liens.
+
             $table->timestamps();
         });
     }
