@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Game;
+use App\Models\Badge;
+use App\Models\Competition;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -18,9 +21,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password',
+        'role', 'description', 'country',
     ];
 
     /**
@@ -33,6 +35,33 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Relations
+
+    public function games()
+    {
+        return $this->belongsToMany(Game::class, 'user_games')
+            ->withPivot('total_points')
+            ->withTimestamps();
+    }
+
+    public function competitions()
+    {
+        return $this->belongsToMany(Competition::class)
+            ->withPivot('points')
+            ->withTimestamps();
+    }
+
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class)
+            ->withTimestamps();
+    }
+
+    // Scope pour récupérer uniquement les gameurs
+    public function scopeGameurs($query)
+    {
+        return $query->where('role', 'gameur');
+    }
     /**
      * Get the attributes that should be cast.
      *
