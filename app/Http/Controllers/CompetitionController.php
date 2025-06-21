@@ -14,8 +14,11 @@ class CompetitionController extends Controller
 
     public function show($id)
     {
-        $competition = Competition::with(['game', 'players'])->findOrFail($id);
-        return response()->json($competition);
+        $competition = Competition::findOrFail($id);
+        return response()->json($competition->load([
+            'game',
+            'players' 
+        ]));
     }
 
     public function registerToCompetition(Request $request, $id)

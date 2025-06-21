@@ -18,13 +18,14 @@ class Competition extends Model
 
     public function game()
     {
-        return $this->belongsTo(Game::class);
+        return $this->belongsTo(Game::class, 'game_id');
     }
 
     public function players()
     {
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(User::class, 'competitions_users')
             ->withPivot('points')
             ->withTimestamps();
     }
+
 }
