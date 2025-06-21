@@ -7,59 +7,38 @@ use Illuminate\Http\Request;
 
 class CompetitionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Competition::with('game')->orderBy('date', 'desc')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $competition = Competition::with(['game', 'players'])->findOrFail($id);
+        return response()->json($competition);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function registerToCompetition(Request $request, $id)
     {
-        //
+        $competition = Competition::findOrFail($id);
+
+        $user = $request->user();
+
+        if ($competition->players()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'Already registered'], 400);
+        }
+
+        $competition->players()->attach($user->id, ['points' => 0]);
+
+        return response()->json(['message' => 'Registered successfully']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Competition $competition)
+    public function players($id)
     {
-        //
-    }
+        $competition = Competition::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Competition $competition)
-    {
-        //
-    }
+        $players = $competition->players()->orderByDesc('pivot_points')->get();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Competition $competition)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Competition $competition)
-    {
-        //
+        return response()->json($players);
     }
 }
