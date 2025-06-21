@@ -24,7 +24,6 @@ class Competition extends Model
     public function players()
     {
         return $this->belongsToMany(User::class, 'competitions_users')
-            ->withPivot('points')
             ->withTimestamps();
     }
 

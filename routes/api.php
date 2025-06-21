@@ -14,8 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('profile', [AuthController::class, 'profile']);
     Route::put('profile', [AuthController::class, 'updateProfile']);
-
-    Route::get('badges/{id}', [BadgeController::class, 'show']);
 });
 
 
@@ -28,7 +26,7 @@ Route::get('games', [GameController::class, 'index']);
 Route::get('games/{id}', [GameController::class, 'show']);
 
 Route::get('badges', [BadgeController::class, 'index']);
+Route::get('badges/{id}', [BadgeController::class, 'show']);
 
-// Route::get('groups', [GroupController::class, 'index']);
-// Route::get('groups/{id}', [GroupController::class, 'show']);
+ 
 
