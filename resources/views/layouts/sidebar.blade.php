@@ -23,7 +23,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#">
+      <a class="nav-link collapsed" href="{{ route('competitions.index') }}">
         <i class="bi bi-trophy"></i>
         <span>Compétitions</span>
       </a>
