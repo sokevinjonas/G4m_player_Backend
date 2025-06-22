@@ -7,11 +7,12 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\GameSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\BadgeSeeder;
+use Database\Seeders\TypesGameSeeder;
 use Database\Seeders\UsersGameSeeder;
+use Database\Seeders\UsersBadgeSeeder;
 use Database\Seeders\CompetitionSeeder;
 use Database\Seeders\CompetitionsUserSeeder;
-use Database\Seeders\BadgeSeeder;
-use Database\Seeders\UsersBadgeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,15 +21,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         $this->call([
             UserSeeder::class,
-            // GameSeeder::class,
-            // CompetitionSeeder::class,
-            // CompetitionsUserSeeder::class,
-            // UsersGameSeeder::class,
-            // BadgeSeeder::class,
-            // UsersBadgeSeeder::class,
+            TypesGameSeeder::class,
+            GameSeeder::class,
+            CompetitionSeeder::class,
+            BadgeSeeder::class,
+            UsersGameSeeder::class,
+            CompetitionsUserSeeder::class,
+            UsersBadgeSeeder::class,
         ]);
     }
 }

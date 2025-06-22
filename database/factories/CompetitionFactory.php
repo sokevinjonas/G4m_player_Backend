@@ -22,12 +22,18 @@ class CompetitionFactory extends Factory
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph,
             'date' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'mode' => $this->faker->randomElement(['solo', 'duo', 'squad']),
             'is_online' => $this->faker->boolean,
+            'location' => $this->faker->optional()->city,
             'reward' => $this->faker->optional()->word,
             'status' => $this->faker->randomElement(['upcoming', 'ongoing', 'completed', 'cancel']),
+            'rules' => json_encode([
+                $this->faker->sentence,
+                $this->faker->sentence,
+            ]),
             'contact_link' => json_encode([
-                'discord' => $this->faker->url,
-                'telegram' => $this->faker->url,
+                ['type' => 'discord', 'url' => $this->faker->url],
+                ['type' => 'telegram', 'url' => $this->faker->url],
             ]),
         ];
     }

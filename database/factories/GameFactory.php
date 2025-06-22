@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TypesGame;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,12 +18,13 @@ class GameFactory extends Factory
     public function definition(): array
     {
         return [
+            'type_game_id' => TypesGame::inRandomOrder()->first()?->id ?? TypesGame::factory(),
             'name' => $this->faker->unique()->company,
             'logo' => $this->faker->imageUrl(200, 200, 'games', true, 'Game Logo'),
             'description' => $this->faker->paragraph,
             'contact_link' => json_encode([
-                'discord' => $this->faker->url,
-                'telegram' => $this->faker->url,
+                ['type' => 'discord', 'url' => $this->faker->url],
+                ['type' => 'telegram', 'url' => $this->faker->url],
             ]),
         ];
     }
