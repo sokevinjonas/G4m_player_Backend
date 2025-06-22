@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('type_game_id')->constrained('types_games')->onDelete('cascade'); // Référence à la table types_games
             $table->string('name')->unique();
             $table->string('logo')->nullable();
             $table->text('description')->nullable();

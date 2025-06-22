@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Group;
+use App\Models\TypesGame;
 use App\Models\Competition;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,5 +32,9 @@ class Game extends Model
     public function groups()
     {
         return $this->hasMany(Group::class);
+    }
+    public function typeGame()
+    {
+        return $this->belongsTo(TypesGame::class, 'type_game_id');
     }
 }
