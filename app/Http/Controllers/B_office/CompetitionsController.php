@@ -49,7 +49,7 @@ class CompetitionsController extends Controller
             'is_online' => $validated['is_online'],
             'location' => $validated['location'] ?? null,
             'reward' => $validated['reward'] ?? null,
-            'status' => $validated['status'],
+            'status' => 'upcoming', // Default status
             'rules' => $rules,
             'contact_link' => !empty($contacts) ? json_encode($contacts) : null,
         ]);
