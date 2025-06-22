@@ -7,59 +7,32 @@ use Illuminate\Http\Request;
 
 class UsersBadgeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Load the badges for the authenticated user.
      */
-    public function index()
+    public function LoadUsersBadgeLocked($user_id)
     {
-        //
+        if (!$user_id) {
+            return response()->json(['badges' => []]);
+        }
+        $badges = UsersBadge::with('badge')
+            ->where('user_id', $user_id)
+            ->where('unlocked', false)
+            ->get();
+
+        return response()->json(['badges' => $badges]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function LoadUsersBadgeUnLocked($user_id)
     {
-        //
-    }
+        if (!$user_id) {
+            return response()->json(['badges' => []]);
+        }
+        $badges = UsersBadge::with('badge')
+            ->where('user_id', $user_id)
+            ->where('unlocked', false)
+            ->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(UsersBadge $usersBadge)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UsersBadge $usersBadge)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, UsersBadge $usersBadge)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(UsersBadge $usersBadge)
-    {
-        //
+        return response()->json(['badges' => $badges]);
     }
 }

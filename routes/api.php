@@ -37,6 +37,10 @@ Route::get('games/{id}', [GameController::class, 'show']);
 
 Route::get('badges', [BadgeController::class, 'index']);
 Route::get('badges/{id}', [BadgeController::class, 'show']);
+Route::post('LoadUsersBadge', [UsersBadgeController::class, 'LoadUsersBadge']);
+// Load badges for the authenticated user
+Route::get('LoadUsersBadgeLocked/{user_id}', [UsersBadgeController::class, 'LoadUsersBadgeLocked']);
+Route::get('LoadUsersBadgeUnLocked/{user_id}', [UsersBadgeController::class, 'LoadUsersBadgeUnLocked']);
 
 Route::get('countAllEnabledCompetitions', [CountController::class, 'countAllEnabledCompetitions']); // Count all enabled competitions
 Route::get('countAllGame', [CountController::class, 'countAllGame']);
@@ -45,5 +49,5 @@ Route::get('pointsCompetitionsUser', [CountController::class, 'pointsCompetition
 Route::get('countUsersBadge', [CountController::class, 'countUsersBadge']);
 
 
- 
+
 
