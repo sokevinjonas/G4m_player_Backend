@@ -55,21 +55,21 @@
 
                   <div class="pt-4 pb-2">
                     <h5 class="card-title text-center pb-0 fs-4">Connexion à votre compte</h5>
-                    <p class="text-center small">Entrez votre email / numéro et votre mot de passe pour vous connecter
+                    <p class="text-center small">Entrez votre email et votre mot de passe pour vous connecter
                     </p>
                   </div>
 
                   <form action="{{ route('auth_login') }}" method="POST" class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Email / Téléphone</label>
+                      <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">
                           <i class="bi bi-person-fill"></i>
                         </span>
-                        <input type="text" name="username" value="{{ old('username') }}"
-                          class="form-control @error('username') is-invalid @enderror" id="yourUsername" required>
-                        @error('username')
+                        <input type="text" name="email" value="{{ old('email') }}"
+                          class="form-control @error('email') is-invalid @enderror" id="yourUsername" required>
+                        @error('email')
                         <div class="invalid-feedback">
                           {{ $message }}
                         </div>
