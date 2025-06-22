@@ -56,4 +56,10 @@ class CompetitionsController extends Controller
 
         return redirect()->route('competitions.index')->with('success', 'Compétition créée avec succès.');
     }
+
+    public function show($id)
+    {
+        $competition = Competition::with('game')->findOrFail($id);
+        return view('tournaments.show', compact('competition'));
+    }
 }

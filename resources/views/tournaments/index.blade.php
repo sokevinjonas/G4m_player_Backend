@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+@include('layouts.messages_flash')
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body">
         <h5 class="card-title">Compétitions</h5>
@@ -68,7 +69,7 @@
                             </td>
                             <td>{{ $competition->reward }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
+                                <a href="{{ route('competitions.show', $competition->id) }}" class="btn btn-sm btn-outline-primary">Voir</a>
                                 {{-- <a href="#" class="btn btn-sm btn-outline-secondary">Modifier</a> --}}
                             </td>
                         </tr>

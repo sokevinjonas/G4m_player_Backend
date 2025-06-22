@@ -49,7 +49,7 @@ class GamesController extends Controller
         Game::create([
             'name' => $validated['name'],
             'type_game_id' => $validated['type_game_id'],
-            'logo' => $logoPath,
+            'logo' => $logoPath ? '/storage/' . $logoPath : null,
             'description' => $validated['description'] ?? null,
             'contact_link' => !empty($contacts) ? json_encode($contacts) : null,
         ]);
