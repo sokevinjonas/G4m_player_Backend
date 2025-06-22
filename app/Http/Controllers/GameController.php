@@ -17,11 +17,5 @@ class GameController extends Controller
         $game = Game::with(['typeGame', 'players', 'competitions'])->findOrFail($id);
         return response()->json($game);
     }
-
-    public function countAll()
-    {
-        $count = Game::count();
-        return response()->json(['count' => $count]);
-    }
     
 }

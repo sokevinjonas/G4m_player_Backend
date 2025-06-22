@@ -62,13 +62,4 @@ class UsersBadgeController extends Controller
     {
         //
     }
-    /**
-     * Count the number of badges for the authenticated user.
-     */
-    public function count()
-    {
-        $user = auth()->user();
-        $badgeCount = UsersBadge::where('user_id', $user->id)->count();
-        return response()->json(['count' => $badgeCount]);
-    }
 }

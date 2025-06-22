@@ -12,7 +12,8 @@ class CompetitionsUser extends Model
     use HasFactory;
     protected $table = 'competitions_users';
     protected $fillable = [
-        'competition_id', 'user_id', 'points',
+        'competition_id', 'user_id', 'points', 'status',
+        'is_winner', 'rank',
     ];
     public $timestamps = true;
     

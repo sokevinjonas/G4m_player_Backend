@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\BadgeController;
+use App\Http\Controllers\CountController;
 use App\Http\Controllers\UsersBadgeController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\CompetitionsUserController;
@@ -17,11 +18,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
     Route::put('profile', [AuthController::class, 'updateProfile']);
 
-    Route::get('competitions/count_all_enable', [CompetitionsUserController::class, 'count_all_enable']);
-    Route::get('games/count_all', [GameController::class, 'countAll']);
-    Route::get('competitions/count', [CompetitionsUserController::class, 'count']);
-    Route::get('competitions/points', [CompetitionsUserController::class, 'points']);
-    Route::get('badges/count', [UsersBadgeController::class, 'count']);
+    // Route::get('competitions/count_all_enable', [CompetitionsUserController::class, 'count_all_enable']);
+    // Route::get('games/count_all', [GameController::class, 'countAll']);
+    // Route::get('competitions/count', [CompetitionsUserController::class, 'count']);
+    // Route::get('competitions/points', [CompetitionsUserController::class, 'points']);
+    // Route::get('badges/count', [UsersBadgeController::class, 'count']);
 
 });
 
@@ -36,6 +37,12 @@ Route::get('games/{id}', [GameController::class, 'show']);
 
 Route::get('badges', [BadgeController::class, 'index']);
 Route::get('badges/{id}', [BadgeController::class, 'show']);
+
+Route::get('countAllEnabledCompetitions', [CountController::class, 'countAllEnabledCompetitions']); // Count all enabled competitions
+Route::get('countAllGame', [CountController::class, 'countAllGame']);
+Route::get('countCompetitionsUser', [CountController::class, 'countCompetitionsUser']);
+Route::get('pointsCompetitionsUser', [CountController::class, 'pointsCompetitionsUser']);
+Route::get('countUsersBadge', [CountController::class, 'countUsersBadge']);
 
 
  
