@@ -9,7 +9,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#">
+      <a class="nav-link collapsed" href="{{ route('players.index') }}">
         <i class="bi bi-controller"></i>
         <span>Joueurs</span>
       </a>
