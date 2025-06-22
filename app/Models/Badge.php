@@ -9,9 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Badge extends Model
 {
     use HasFactory;
-    
-     protected $fillable = [
-        'name', 'icon', 'description',
+     protected $guarded = [
+        'id'
     ];
 
     public function users()

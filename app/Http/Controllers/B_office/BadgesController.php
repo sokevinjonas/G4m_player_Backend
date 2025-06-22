@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\B_office;
 
-use App\Http\Controllers\Controller;
 use App\Models\Badge;
-use Illuminate\Support\Str;
-use App\Http\Requests\StoreBadgeRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str; 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Badges\StoreBadgeRequest;
 
 class BadgesController extends Controller
 {
@@ -30,6 +30,7 @@ class BadgesController extends Controller
             $path = $request->file('icon')->store('badges', 'public');
             $data['icon'] = '/storage/' . $path;
         }
+        // dd($data);
 
         Badge::create($data);
 

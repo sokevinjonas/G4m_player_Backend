@@ -21,10 +21,10 @@ return new class extends Migration
             $table->boolean('is_active')->default(true); // Indique si le badge est actif
 
             // Critères de déblocage
-            $table->integer('required_points')->nullable(); // Total de points requis
-            $table->integer('required_wins')->nullable();   // Victoires requises
-            $table->integer('required_participations')->nullable(); // Compétitions nécessaires
-            $table->integer('required_top3')->nullable();   // Top 3 requis
+            $table->integer('required_points'); // Total de points requis
+            $table->integer('required_wins');   // Victoires requises
+            $table->integer('required_participations'); // Compétitions nécessaires
+            $table->integer('required_top3');   // Top 3 requis
             $table->timestamps();
 
             // NB 
