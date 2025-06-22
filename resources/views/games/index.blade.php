@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Liste des Jeux')
+@push('styles')
+    <style>
+        .game-card:hover {
+            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.12);
+            transform: translateY(-4px) scale(1.02);
+            transition: all 0.2s;
+        }
+    </style>
+@endpush
 @section('pageTitle')
 <h1>Liste des Jeux</h1>
 <nav>
@@ -11,42 +20,41 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{{ route('games.create') }}" class="btn btn-primary">Ajouter un jeu</a>
-    </div>
+<div class="row mb-3">
     <div class="col-12">
-        <div class="card recent-sales overflow-auto">
-            <div class="card-body">
-                <h5 class="card-title">Liste des Jeux</h5>
-                <table class="table table-borderless datatable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nom</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Logo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($games as $game)
-                            <tr>
-                                <td>{{ $game->id }}</td>
-                                <td>{{ $game->name }}</td>
-                                <td>{{ $game->typeGame?->name }}</td>
-                                <td>{{ $game->description }}</td>
-                                <td>
-                                    @if($game->logo)
-                                        <img src="{{ $game->logo }}" alt="Logo" width="40">
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <a href="{{ route('games.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Ajouter un jeu
+        </a>
+    </div>
+</div>
+<div class="row">
+    @foreach($games as $game)
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+            <div class="card shadow-sm border-0 rounded-4 h-100 game-card transition" style="width: 100%;">
+                <img src="{{ $game->logo ?? 'https://via.placeholder.com/300x180?text=No+Logo' }}" class="card-img-top rounded-top-4" alt="Logo du jeu" style="height:180px;object-fit:cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-1">{{ $game->name }}</h5>
+                    <span class="badge bg-info mb-2" style="width:max-content;">{{ $game->typeGame?->name }}</span>
+                    <p class="card-text text-muted small flex-grow-1">{{ Str::limit($game->description, 80) }}</p>
+                </div>
+                @if($game->contact_link)
+                <ul class="list-group list-group-flush">
+                    @foreach(json_decode($game->contact_link, true) as $contact)
+                        <li class="list-group-item py-2">
+                            <i class="bi bi-link-45deg"></i>
+                            <strong>{{ $contact['type'] ?? '' }}:</strong>
+                            <a href="{{ $contact['url'] ?? '#' }}" target="_blank" class="link-primary text-decoration-underline">Rejoindre</a>
+                        </li>
+                    @endforeach
+                </ul>
+                @endif
+                <div class="card-body pt-2">
+                    <a href="#" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-eye"></i> Voir
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    @endforeach
 </div>
 @endsection

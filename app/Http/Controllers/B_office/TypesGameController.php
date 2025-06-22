@@ -12,6 +12,10 @@ class TypesGameController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:types_games,name',
+        ], [
+            'name.required' => 'Le nom du type de jeu est obligatoire.',
+            'name.unique' => 'Ce type de jeu existe déjà.',
+            'name.max' => 'Le nom ne doit pas dépasser 255 caractères.',
         ]);
         TypesGame::create(['name' => $request->name]);
         return redirect()->back()->with('success', 'Type de jeu ajouté avec succès.');
