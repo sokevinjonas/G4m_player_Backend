@@ -7,6 +7,7 @@ use App\Http\Controllers\B_office\PlayerController;
 use App\Http\Controllers\B_office\DashboardController;
 use App\Http\Controllers\B_office\TypesGameController;
 use App\Http\Controllers\B_office\CompetitionsController;
+use App\Http\Controllers\B_office\BadgesController;
 
 
 Route::get('/login.php', [AuthController::class, 'login'])->name('login');
@@ -30,4 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/competitions/create', [CompetitionsController::class, 'create'])->name('competitions.create');
     Route::post('/competitions', [CompetitionsController::class, 'store'])->name('competitions.store');
     Route::get('/competitions/{id}', [CompetitionsController::class, 'show'])->name('competitions.show');
+
+    // Badges routes
+    Route::get('/badges', [BadgesController::class, 'index'])->name('badges.index');
+    Route::get('/badges/create', [BadgesController::class, 'create'])->name('badges.create');
+    Route::post('/badges', [BadgesController::class, 'store'])->name('badges.store');
 });
