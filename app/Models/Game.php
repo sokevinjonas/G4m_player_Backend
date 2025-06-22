@@ -19,14 +19,14 @@ class Game extends Model
 
     public function players()
     {
-        return $this->belongsToMany(User::class, 'user_games')
+        return $this->belongsToMany(User::class, 'users_games')
             ->withPivot('total_points')
             ->withTimestamps();
     }
 
     public function competitions()
     {
-        return $this->hasMany(Competition::class);
+        return $this->hasMany(Competition::class, 'game_id');
     }
 
     public function groups()

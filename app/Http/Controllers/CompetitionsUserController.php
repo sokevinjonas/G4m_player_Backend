@@ -62,4 +62,32 @@ class CompetitionsUserController extends Controller
     {
         //
     }
+    /**
+     * Count the number of competitions a user is registered in.
+     */
+    public function count()
+    {
+        $userId = auth()->id();
+        $count = CompetitionsUser::where('user_id', $userId)->count();
+        return response()->json(['count' => $count]);
+    }
+
+    /**
+     * Get the total points of a user in competitions.
+     */
+    public function points()
+    {
+        $userId = auth()->id();
+        $points = CompetitionsUser::where('user_id', $userId)->sum('points');
+        return response()->json(['points' => $points]);
+    }
+    /**
+     * Count all enabled competitions for the authenticated user.
+     */
+    public function count_all_enable()
+    {
+        $count = CompetitionsUser::where('status', 'upcoming') // Assuming 'upcoming' is the status for enabled competitions
+            ->count();
+        return response()->json(['count' => $count]);
+    }
 }
