@@ -14,7 +14,7 @@ class Game extends Model
     use HasFactory;
     
     protected $fillable = [
-        'name', 'logo', 'description',
+        'name', 'logo', 'description', 'type_game_id', 'contact_link',
     ];
 
     public function players()

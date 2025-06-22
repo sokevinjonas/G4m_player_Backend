@@ -16,7 +16,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#">
+      <a class="nav-link collapsed" href="{{ route('games.index') }}">
         <i class="bi bi-joystick"></i>
         <span>Jeux</span>
       </a>
