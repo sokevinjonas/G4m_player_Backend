@@ -1,53 +1,34 @@
 @extends('layouts.app')
-@section('title', 'Tableau de Board')
+@section('title', 'Tableau de bord')
 @section('pageTitle')
-    <h1>Tableau de Board</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Tableau de Board</a></li>
-          <li class="breadcrumb-item active">Tableau de Board</li>
-        </ol>
-      </nav>
+  <h1>Tableau de bord</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Admin</a></li>
+      <li class="breadcrumb-item active">Tableau de bord</li>
+    </ol>
+  </nav>
 @endsection
 
 @section('content')
 <div class="row">
 
-  <!-- Indicateurs principaux -->
+  <!-- Indicateurs -->
   <div class="col-lg-8">
     <div class="row">
 
-      <!-- Commandes du jour -->
+      <!-- Tournois en cours -->
       <div class="col-xxl-4 col-md-6">
         <div class="card info-card sales-card">
           <div class="card-body">
-            <h5 class="card-title">Commandes du jour</h5>
+            <h5 class="card-title">Tournois en cours</h5>
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-bag-check"></i>
+                <i class="bi bi-trophy"></i>
               </div>
               <div class="ps-3">
-                <h6>12</h6>
-                <span class="text-success small pt-1 fw-bold">+3</span> 
-                <span class="text-muted small pt-2 ps-1">vs hier</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recette nette -->
-      <div class="col-xxl-4 col-md-6">
-        <div class="card info-card revenue-card">
-          <div class="card-body">
-            <h5 class="card-title">Recette nette</h5>
-            <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-currency-dollar"></i>
-              </div>
-              <div class="ps-3">
-                <h6>85,000 FCFA</h6>
-                <span class="text-success small pt-1 fw-bold">+12%</span> 
+                <h6>3</h6>
+                <span class="text-success small pt-1 fw-bold">+1</span> 
                 <span class="text-muted small pt-2 ps-1">cette semaine</span>
               </div>
             </div>
@@ -55,51 +36,67 @@
         </div>
       </div>
 
-      <!-- Clients actifs -->
-      <div class="col-xxl-4 col-xl-12">
-        <div class="card info-card customers-card">          
+      <!-- Joueurs inscrits -->
+      <div class="col-xxl-4 col-md-6">
+        <div class="card info-card revenue-card">
           <div class="card-body">
-            <h5 class="card-title">Clients actifs</h5>
+            <h5 class="card-title">Joueurs inscrits</h5>
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-controller"></i>
               </div>
               <div class="ps-3">
-                <h6>320</h6>
-                <span class="text-success small pt-1 fw-bold">+8%</span> 
-                <span class="text-muted small pt-2 ps-1">depuis le mois dernier</span>
+                <h6>1,240</h6>
+                <span class="text-success small pt-1 fw-bold">+5%</span> 
+                <span class="text-muted small pt-2 ps-1">ce mois</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Top produits -->
+      <!-- Jeux disponibles -->
+      <div class="col-xxl-4 col-xl-12">
+        <div class="card info-card customers-card">
+          <div class="card-body">
+            <h5 class="card-title">Jeux disponibles</h5>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-joystick"></i>
+              </div>
+              <div class="ps-3">
+                <h6>6</h6>
+                <span class="text-success small pt-1 fw-bold">+2</span> 
+                <span class="text-muted small pt-2 ps-1">nouveaux jeux ajoutés</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Jeux -->
       <div class="col-12">
         <div class="card top-selling overflow-auto">
           <div class="card-body pb-0">
-            <h5 class="card-title">Top Tenues</h5>
+            <h5 class="card-title">Top Jeux</h5>
             <table class="table table-borderless">
               <thead>
                 <tr>
-                  <th>Tenue</th>
-                  <th>Prix</th>
-                  <th>Commandes</th>
-                  <th>Recette</th>
+                  <th>Jeu</th>
+                  <th>Participants</th>
+                  <th>Tournois</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Robe Wax</td>
-                  <td>15,000 FCFA</td>
-                  <td>40</td>
-                  <td>600,000 FCFA</td>
+                  <td>PUBG Mobile</td>
+                  <td>540</td>
+                  <td>5</td>
                 </tr>
                 <tr>
-                  <td>Costume 3 pièces</td>
-                  <td>25,000 FCFA</td>
-                  <td>25</td>
-                  <td>625,000 FCFA</td>
+                  <td>Call of Duty Mobile</td>
+                  <td>410</td>
+                  <td>3</td>
                 </tr>
               </tbody>
             </table>
@@ -107,35 +104,35 @@
         </div>
       </div>
 
-      <!-- Commandes récentes -->
+      <!-- Inscriptions récentes -->
       <div class="col-12">
         <div class="card recent-sales overflow-auto">
           <div class="card-body">
-            <h5 class="card-title">Commandes récentes</h5>
+            <h5 class="card-title">Inscriptions récentes</h5>
             <table class="table table-borderless">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Client</th>
-                  <th>Tenue</th>
-                  <th>Montant</th>
+                  <th>Joueur</th>
+                  <th>Jeu</th>
+                  <th>Tournoi</th>
                   <th>Statut</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>#0012</td>
-                  <td>Aïcha Traoré</td>
-                  <td>Robe Wax</td>
-                  <td>15,000 FCFA</td>
-                  <td><span class="badge bg-success">Livrée</span></td>
+                  <td>#T001</td>
+                  <td>Alpha Gaming</td>
+                  <td>PUBG</td>
+                  <td>WarZone Arena</td>
+                  <td><span class="badge bg-success">Confirmé</span></td>
                 </tr>
                 <tr>
-                  <td>#0013</td>
-                  <td>Yacouba Ouédraogo</td>
-                  <td>Costume</td>
-                  <td>25,000 FCFA</td>
-                  <td><span class="badge bg-warning">En cours</span></td>
+                  <td>#T002</td>
+                  <td>Ghost COD</td>
+                  <td>COD Mobile</td>
+                  <td>Call Clash</td>
+                  <td><span class="badge bg-warning">En attente</span></td>
                 </tr>
               </tbody>
             </table>
@@ -155,40 +152,41 @@
         <h5 class="card-title">Activité récente</h5>
         <div class="activity">
           <div class="activity-item d-flex">
-            <div class="activite-label">Il y a 15 min</div>
+            <div class="activite-label">Il y a 10 min</div>
             <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
             <div class="activity-content">
-              Nouvelle commande de <b>Rokia Diallo</b> (Robe)
+              Nouveau joueur inscrit : <b>GamerX</b>
             </div>
           </div>
           <div class="activity-item d-flex">
             <div class="activite-label">Il y a 1h</div>
             <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
             <div class="activity-content">
-              Paiement en attente pour <b>#0013</b>
+              Nouvelle compétition <b>"Duel Clash COD"</b> publiée
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Alertes stock -->
+    <!-- Groupes à modérer -->
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Tissus faibles en stock</h5>
+        <h5 class="card-title">Groupes récents</h5>
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            Wax jaune
-            <span class="badge bg-danger rounded-pill">5m</span>
+            Discord - PUBG Elite
+            <span class="badge bg-primary rounded-pill">65 membres</span>
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            Satin blanc
-            <span class="badge bg-warning rounded-pill">8m</span>
+            WhatsApp - Clash Squad
+            <span class="badge bg-secondary rounded-pill">42 membres</span>
           </li>
         </ul>
       </div>
     </div>
 
   </div>
+
 </div>
 @endsection

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\B_office;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Ajouté
+use Illuminate\Http\RedirectResponse; // Ajouté
 
 class AuthController extends Controller
 {
@@ -25,7 +27,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email ou Téléphone et mot de passe incorrect.',
+            'email' => 'Email ou mot de passe incorrect.',
         ])->withInput();
     }
 

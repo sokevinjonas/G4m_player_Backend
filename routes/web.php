@@ -14,4 +14,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/logout.php', [_AuthController::class, 'logout'])->name('logout');
 
-    });
+});
