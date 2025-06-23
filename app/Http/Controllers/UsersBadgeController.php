@@ -17,7 +17,7 @@ class UsersBadgeController extends Controller
         }
         $badges = UsersBadge::with('badge')
             ->where('user_id', $user_id)
-            ->where('unlocked', false)
+            ->where('unlocked', true)
             ->get();
 
         return response()->json(['badges' => $badges]);
