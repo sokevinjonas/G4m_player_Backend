@@ -73,30 +73,4 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
-    public function profile(Request $request)
-    {
-        $user = $request->user()->load('games', 'competitions', 'badges');
-
-        return response()->json($user);
-    }
-
-    public function updateProfile(Request $request)
-    {
-        $user = $request->user();
-
-        $data = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'country' => 'nullable|string|max:100',
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-
-        $user->update($data);
-
-        return response()->json($user);
-    }
 }
