@@ -70,6 +70,13 @@
                     @error('mode')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="max_participants" class="form-label">Participants Max <span class="text-danger">*</span></label>
+                    <input type="number" name="max_participants" id="max_participants" class="form-control" value="{{ old('max_participants', 100) }}" min="1" max="1000" required>
+                    @error('max_participants')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
                 </div> 
                 <div class="col-md-3 mb-3">
                     <label for="is_online" class="form-label">En ligne ? <span class="text-danger">*</span></label>
@@ -82,16 +89,43 @@
                     @enderror
                 </div>
                 <div class="col-md-3 mb-3">
+                    <label for="status" class="form-label">Statut</label>
+                    <select name="status" id="status" class="form-control">
+                        <option value="upcoming" {{ old('status') == 'upcoming' ? 'selected' : '' }}>À venir</option>
+                        <option value="ongoing" {{ old('status') == 'ongoing' ? 'selected' : '' }}>En cours</option>
+                        <option value="full" {{ old('status') == 'full' ? 'selected' : '' }}>Complet</option>
+                        <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Annulé</option>
+                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Terminé</option>
+                    </select>
+                    @error('status')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-3 mb-3">
                     <label for="location" class="form-label">Lieu (si hors ligne)</label>
                     <input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}">
                     @error('location')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="reward" class="form-label">Récompense <span class="text-danger">*</span></label>
+                <div class="col-md-3 mb-3">
+                    <label for="reward" class="form-label">Récompense</label>
                     <input type="text" name="reward" id="reward" class="form-control" value="{{ old('reward') }}">
                     @error('reward')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="image" class="form-label">Image (URL ou chemin)</label>
+                    <input type="text" name="image" id="image" class="form-control" value="{{ old('image') }}" placeholder="https://example.com/image.jpg">
+                    @error('image')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="video" class="form-label">Vidéo (URL ou chemin)</label>
+                    <input type="text" name="video" id="video" class="form-control" value="{{ old('video') }}" placeholder="https://example.com/video.mp4">
+                    @error('video')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
@@ -131,6 +165,31 @@
 <script>
     let contactIndex = 1;
     let ruleIndex = 1;
+
+    // Gestion de l'affichage conditionnel du champ lieu
+    function toggleLocationField() {
+        const isOnline = document.getElementById('is_online').value;
+        const locationField = document.getElementById('location');
+        const locationLabel = document.querySelector('label[for="location"]');
+        
+        if (isOnline === '0') {
+            locationField.setAttribute('required', 'required');
+            locationLabel.innerHTML = 'Lieu <span class="text-danger">*</span>';
+            locationField.closest('.col-md-3').style.display = 'block';
+        } else {
+            locationField.removeAttribute('required');
+            locationLabel.innerHTML = 'Lieu (si hors ligne)';
+            locationField.value = '';
+        }
+    }
+
+    // Initialiser l'affichage au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleLocationField();
+        
+        // Écouter les changements sur le select is_online
+        document.getElementById('is_online').addEventListener('change', toggleLocationField);
+    });
 
     document.addEventListener('click', function(e) {
         // Contacts dynamique

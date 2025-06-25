@@ -46,10 +46,14 @@ class CompetitionsController extends Controller
             'description' => $validated['description'] ?? null,
             'date' => $validated['date'],
             'mode' => $validated['mode'] ?? null,
+            'max_participants' => $validated['max_participants'] ?? 100,
+            'current_participants' => $validated['current_participants'] ?? 0,
+            'image' => $validated['image'] ?? null,
+            'video' => $validated['video'] ?? null,
             'is_online' => $validated['is_online'],
             'location' => $validated['location'] ?? null,
             'reward' => $validated['reward'] ?? null,
-            'status' => 'upcoming', // Default status
+            'status' => $validated['status'] ?? 'upcoming',
             'rules' => $rules,
             'contact_link' => !empty($contacts) ? json_encode($contacts) : null,
         ]);
