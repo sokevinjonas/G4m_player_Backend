@@ -18,10 +18,14 @@ return new class extends Migration
         $table->text('description')->nullable();
         $table->dateTime('date');
         $table->enum('mode', ['solo', 'duo', 'squad'])->nullable(); // Nouveau
+        $table->integer('max_participants')->default(100); // Nouveau
+        $table->integer('current_participants')->default(0); // Nouveau
+        $table->string('image')->nullable(); 
+        $table->string('video')->nullable(); 
         $table->boolean('is_online')->default(true);
         $table->string('location')->nullable(); // Nouveau si is_online = false
         $table->string('reward')->nullable();
-        $table->enum('status', ['upcoming', 'ongoing', 'completed', 'cancel'])->default('upcoming');
+        $table->enum('status', ['upcoming', 'ongoing', 'full', 'cancelled', 'completed'])->default('upcoming');
         $table->json('rules')->nullable(); // Nouveau
         $table->json('contact_link')->nullable();
         $table->timestamps();
