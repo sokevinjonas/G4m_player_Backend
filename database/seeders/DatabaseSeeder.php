@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            TypesGameSeeder::class,
-            GameSeeder::class,
-            CompetitionSeeder::class,
-            BadgeSeeder::class,
-            UsersGameSeeder::class,
-            CompetitionsUserSeeder::class,
-            UsersBadgeSeeder::class,
+            // TypesGameSeeder::class,
+            // GameSeeder::class,
+            // CompetitionSeeder::class,
+            // BadgeSeeder::class,
+            // UsersGameSeeder::class,
+            // CompetitionsUserSeeder::class,
+            // UsersBadgeSeeder::class,
         ]);
     }
 }

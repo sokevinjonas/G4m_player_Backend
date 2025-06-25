@@ -15,25 +15,16 @@ class CompetitionsUserController extends Controller
     {
         $this->competitionsUserService = $competitionsUserService;
     }
-{
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = CompetitionsUser::with(['competition', 'user']);
+        $filters = $request->only(['competition_id', 'user_id']);
+        $perPage = $request->get('per_page', 10);
         
-        // Filtrer par compétition si spécifié
-        if ($request->has('competition_id')) {
-            $query->where('competition_id', $request->competition_id);
-        }
-        
-        // Filtrer par utilisateur si spécifié
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
-        
-        $participants = $query->orderBy('created_at', 'desc')->paginate(10);
+        $participants = $this->competitionsUserService->getParticipants($filters, $perPage);
         
         return response()->json($participants);
     }
@@ -51,63 +42,23 @@ class CompetitionsUserController extends Controller
      */
     public function store(StoreCompetitionsUserRequest $request)
     {
-        return DB::transaction(function () use ($request) {
-            $competition = Competition::findOrFail($request->competition_id);
-            
-            // Vérifier si l'utilisateur est déjà inscrit
-            $existingParticipation = CompetitionsUser::where('competition_id', $request->competition_id)
-                ->where('user_id', $request->user_id)
-                ->first();
-                
-            if ($existingParticipation) {
-                return response()->json([
-                    'message' => 'L\'utilisateur est déjà inscrit à cette compétition',
-                    'error' => 'already_registered'
-                ], 409);
-            }
-            
-            // Vérifier si la compétition est pleine
-            if ($competition->status === 'full') {
-                return response()->json([
-                    'message' => 'Cette compétition est complète',
-                    'error' => 'competition_full'
-                ], 409);
-            }
-            
-            // Vérifier si la compétition peut encore accepter des participants
-            if ($competition->current_participants >= $competition->max_participants) {
-                return response()->json([
-                    'message' => 'Cette compétition a atteint le nombre maximum de participants',
-                    'error' => 'max_participants_reached'
-                ], 409);
-            }
-            
-            // Créer l'inscription
-            $competitionUser = CompetitionsUser::create([
-                'competition_id' => $request->competition_id,
-                'user_id' => $request->user_id,
-                'points' => 0,
-            ]);
-            
-            // Incrémenter le nombre de participants
-            $competition->increment('current_participants');
-            
-            // Mettre à jour le statut si nécessaire
-            if ($competition->status !== 'upcoming') {
-                $competition->update(['status' => 'upcoming']);
-            }
-            
-            // Vérifier si la compétition est maintenant pleine
-            if ($competition->current_participants >= $competition->max_participants) {
-                $competition->update(['status' => 'full']);
-            }
-            
+        $result = $this->competitionsUserService->registerUserToCompetition(
+            $request->competition_id,
+            $request->user_id
+        );
+
+        if (!$result['success']) {
             return response()->json([
-                'message' => 'Inscription réussie',
-                'data' => $competitionUser->load(['competition', 'user']),
-                'competition_status' => $competition->fresh()->status
-            ], 201);
-        });
+                'message' => $result['message'],
+                'error' => $result['error_code']
+            ], $result['status_code']);
+        }
+
+        return response()->json([
+            'message' => $result['message'],
+            'data' => $result['data'],
+            'competition_status' => $result['competition_status']
+        ], $result['status_code']);
     }
 
     /**
@@ -115,9 +66,11 @@ class CompetitionsUserController extends Controller
      */
     public function show(CompetitionsUser $competitionsUser)
     {
+        $result = $this->competitionsUserService->getParticipationDetails($competitionsUser);
+        
         return response()->json([
-            'data' => $competitionsUser->load(['competition', 'user'])
-        ]);
+            'data' => $result['data']
+        ], $result['status_code']);
     }
 
     /**
@@ -141,24 +94,21 @@ class CompetitionsUserController extends Controller
      */
     public function destroy(CompetitionsUser $competitionsUser)
     {
-        return DB::transaction(function () use ($competitionsUser) {
-            $competition = $competitionsUser->competition;
-            
-            // Supprimer l'inscription
-            $competitionsUser->delete();
-            
-            // Décrémenter le nombre de participants
-            $competition->decrement('current_participants');
-            
-            // Mettre à jour le statut si la compétition n'est plus pleine
-            if ($competition->status === 'full' && $competition->current_participants < $competition->max_participants) {
-                $competition->update(['status' => 'upcoming']);
-            }
-            
-            return response()->json([
-                'message' => 'Désinscription réussie',
-                'competition_status' => $competition->fresh()->status
-            ], 200);
-        });
+        $result = $this->competitionsUserService->unregisterUser($competitionsUser);
+        
+        return response()->json([
+            'message' => $result['message'],
+            'competition_status' => $result['competition_status']
+        ], $result['status_code']);
+    }
+
+    /**
+     * Obtenir les statistiques d'une compétition
+     */
+    public function getCompetitionStats(Request $request, int $competitionId)
+    {
+        $result = $this->competitionsUserService->getCompetitionStats($competitionId);
+        
+        return response()->json($result['data'], $result['status_code']);
     }
 }
