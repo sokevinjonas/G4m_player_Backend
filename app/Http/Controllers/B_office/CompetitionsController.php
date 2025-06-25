@@ -26,18 +26,6 @@ class CompetitionsController extends Controller
     {
         $validated = $request->validated();
 
-        // Gestion de l'upload de l'image
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('competitions/images', 'public');
-        }
-
-        // Gestion de l'upload de la vidéo
-        $videoPath = null;
-        if ($request->hasFile('video')) {
-            $videoPath = $request->file('video')->store('competitions/videos', 'public');
-        }
-
         // Préparation des règles et contacts
         $rules = !empty($validated['rules']) ? json_encode(array_filter($validated['rules'])) : null;
         $contacts = [];
@@ -58,14 +46,10 @@ class CompetitionsController extends Controller
             'description' => $validated['description'] ?? null,
             'date' => $validated['date'],
             'mode' => $validated['mode'] ?? null,
-            'max_participants' => $validated['max_participants'] ?? 100,
-            'current_participants' => $validated['current_participants'] ?? 0,
-            'image' => $imagePath,
-            'video' => $videoPath,
             'is_online' => $validated['is_online'],
             'location' => $validated['location'] ?? null,
             'reward' => $validated['reward'] ?? null,
-            'status' => $validated['status'] ?? 'upcoming',
+            'status' => 'upcoming', // Default status
             'rules' => $rules,
             'contact_link' => !empty($contacts) ? json_encode($contacts) : null,
         ]);

@@ -23,7 +23,7 @@
 @endif
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body">
-        <form action="{{ route('competitions.store') }}" method="POST" id="competitionForm" enctype="multipart/form-data">
+        <form action="{{ route('competitions.store') }}" method="POST" id="competitionForm">
             @csrf
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -70,13 +70,6 @@
                     @error('mode')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="max_participants" class="form-label">Participants Max <span class="text-danger">*</span></label>
-                    <input type="number" name="max_participants" id="max_participants" class="form-control" value="{{ old('max_participants', 100) }}" min="1" max="1000" required>
-                    @error('max_participants')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
                 </div> 
                 <div class="col-md-3 mb-3">
                     <label for="is_online" class="form-label">En ligne ? <span class="text-danger">*</span></label>
@@ -89,47 +82,16 @@
                     @enderror
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="status" class="form-label">Statut</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="upcoming" {{ old('status') == 'upcoming' ? 'selected' : '' }}>À venir</option>
-                        <option value="ongoing" {{ old('status') == 'ongoing' ? 'selected' : '' }}>En cours</option>
-                        <option value="full" {{ old('status') == 'full' ? 'selected' : '' }}>Complet</option>
-                        <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Annulé</option>
-                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Terminé</option>
-                    </select>
-                    @error('status')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-3 mb-3">
                     <label for="location" class="form-label">Lieu (si hors ligne)</label>
                     <input type="text" name="location" id="location" class="form-control" value="{{ old('location') }}">
                     @error('location')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label for="reward" class="form-label">Récompense</label>
+                <div class="col-md-6 mb-3">
+                    <label for="reward" class="form-label">Récompense <span class="text-danger">*</span></label>
                     <input type="text" name="reward" id="reward" class="form-control" value="{{ old('reward') }}">
                     @error('reward')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="image" class="form-label">Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
-                    <small class="form-text text-muted">Formats acceptés: JPG, PNG, GIF (Max: 2MB)</small>
-                    <div id="image-preview" class="mt-2"></div>
-                    @error('image')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="video" class="form-label">Vidéo</label>
-                    <input type="file" name="video" id="video" class="form-control" accept="video/*">
-                    <small class="form-text text-muted">Formats acceptés: MP4, AVI, MOV (Max: 10MB)</small>
-                    <div id="video-preview" class="mt-2"></div>
-                    @error('video')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
@@ -169,72 +131,6 @@
 <script>
     let contactIndex = 1;
     let ruleIndex = 1;
-
-    // Gestion de l'affichage conditionnel du champ lieu
-    function toggleLocationField() {
-        const isOnline = document.getElementById('is_online').value;
-        const locationField = document.getElementById('location');
-        const locationLabel = document.querySelector('label[for="location"]');
-        
-        if (isOnline === '0') {
-            locationField.setAttribute('required', 'required');
-            locationLabel.innerHTML = 'Lieu <span class="text-danger">*</span>';
-            locationField.closest('.col-md-3').style.display = 'block';
-        } else {
-            locationField.removeAttribute('required');
-            locationLabel.innerHTML = 'Lieu (si hors ligne)';
-            locationField.value = '';
-        }
-    }
-
-    // Initialiser l'affichage au chargement de la page
-    document.addEventListener('DOMContentLoaded', function() {
-        toggleLocationField();
-        
-        // Écouter les changements sur le select is_online
-        document.getElementById('is_online').addEventListener('change', toggleLocationField);
-
-        // Prévisualisation de l'image
-        document.getElementById('image').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const preview = document.getElementById('image-preview');
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `
-                        <img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
-                        <p class="small text-muted mt-1">Fichier: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
-                    `;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.innerHTML = '';
-            }
-        });
-
-        // Prévisualisation de la vidéo
-        document.getElementById('video').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const preview = document.getElementById('video-preview');
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `
-                        <video controls class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
-                            <source src="${e.target.result}" type="${file.type}">
-                            Votre navigateur ne supporte pas la lecture vidéo.
-                        </video>
-                        <p class="small text-muted mt-1">Fichier: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
-                    `;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.innerHTML = '';
-            }
-        });
-    });
 
     document.addEventListener('click', function(e) {
         // Contacts dynamique

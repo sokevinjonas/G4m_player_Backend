@@ -21,11 +21,11 @@ Route::get('competitions/{id}/players', [CompetitionController::class, 'players'
 
 // Routes pour gérer les inscriptions aux compétitions
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('checkExistingParticipation', [CompetitionsUserController::class, 'checkExistingParticipation']);
     Route::get('competitions-users', [CompetitionsUserController::class, 'index']);
     Route::post('competitions-users', [CompetitionsUserController::class, 'store']);
-    Route::delete('competitions-users/{competitionsUser}', [CompetitionsUserController::class, 'destroy']);
     Route::get('competitions-users/{competitionsUser}', [CompetitionsUserController::class, 'show']);
-
+    Route::delete('competitions-users/{competitionsUser}', [CompetitionsUserController::class, 'destroy']);
     Route::post('logout', [AuthController::class, 'logout']);
 
 });

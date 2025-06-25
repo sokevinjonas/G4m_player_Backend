@@ -111,4 +111,34 @@ class CompetitionsUserController extends Controller
         
         return response()->json($result['data'], $result['status_code']);
     }
+
+    public function checkExistingParticipation(Request $request)
+    {
+        $userId = auth()->id();
+        $competitionId = $request->query('competition_id');
+
+        if (!$competitionId) {
+            return response()->json([
+                'exists' => false,
+                'message' => 'Paramètre competition_id manquant.'
+            ], 400);
+        }
+
+        $participation = CompetitionsUser::where('competition_id', $competitionId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$participation) {
+            return response()->json([
+                'exists' => false,
+                'message' => 'Aucune participation trouvée.'
+            ]);
+        }
+
+        return response()->json([
+            'exists' => true,
+            'message' => 'L’utilisateur est déjà inscrit.',
+            'data' => $participation
+        ]);
+    }
 }
