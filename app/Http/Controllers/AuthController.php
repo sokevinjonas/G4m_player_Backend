@@ -7,10 +7,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ReferralReward;
 use Illuminate\Validation\Rule;
+use App\Services\ReferralService;
+use App\Notifications\WelcomeNewUser;
 use Illuminate\Support\Facades\Hash; 
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
-use App\Services\ReferralService;
 
 class AuthController extends Controller
 {
@@ -34,8 +35,12 @@ class AuthController extends Controller
             // On ne met pas referred_by ici, il sera mis à jour par le service
         ]);
 
+        
         // Gère le parrainage via le service
         app(ReferralService::class)->handleReferral($user, $data['referred_by'] ?? null);
+        
+        // Envoie une notification de bienvenue (elle sera mise en queue)
+        $user->notify(new WelcomeNewUser());
 
         return response()->json([
             'message' => 'User registered successfully',

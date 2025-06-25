@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\ReferralReward;
+use App\Notifications\NewReferralReward;
 
 class ReferralService
 {
@@ -34,6 +35,9 @@ class ReferralService
 
         // Donne des points au parrain
         $referrer->increment('points', 10);
+
+        // Envoyer les notifications (elles seront mises en queue)
+        $referrer->notify(new NewReferralReward($user));
     }
 
 }
