@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             // 🔁 Parrainage
             $table->string('referral_code')->unique()->nullable(); // Code de parrainage que ce user peut partager
-            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete(); // ID du parrain
+            $table->string('referred_by')->nullable(); // Code du parrain
 
              // 🎯 Points cumulés
             $table->integer('points')->default(0); // Points obtenus via actions, tournois, badges...

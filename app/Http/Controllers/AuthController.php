@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Str;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ReferralReward;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash; 
-use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\RegisterRequest;
+use App\Services\ReferralService;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
         // Génère un code unique pour ce user
         do {
-            $code = strtoupper(Str::random(8));
+            $code = strtoupper(Str::random(6));
         } while (User::where('referral_code', $code)->exists());
 
         $user = User::create([
@@ -30,26 +31,15 @@ class AuthController extends Controller
             'country' => $data['country'] ?? null,
             'description' => $data['description'] ?? null,
             'referral_code' => $code,
-            // Si code de parrainage fourni, on récupère l'id du parrain
-            'referred_by' => isset($data['referral_code'])
-                ? User::where('referral_code', $data['referral_code'])->value('id')
-                : null,
+            // On ne met pas referred_by ici, il sera mis à jour par le service
         ]);
 
-        // Si parrainage, crée la récompense
-        if (isset($data['referral_code'])) {
-            $referrerId = User::where('referral_code', $data['referral_code'])->value('id');
-            if ($referrerId) {
-                ReferralReward::create([
-                    'referrer_id' => $referrerId,
-                    'referred_id' => $user->id,
-                ]);
-            }
-        }
+        // Gère le parrainage via le service
+        app(ReferralService::class)->handleReferral($user, $data['referred_by'] ?? null);
 
         return response()->json([
             'message' => 'User registered successfully',
-            'user'  => $user,
+            'user'  => $user->fresh(), // pour avoir referred_by à jour
         ], 201);
     }
 
