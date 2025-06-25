@@ -13,7 +13,7 @@ class CompetitionsUserSeeder extends Seeder
      */
     public function run(): void
     {
-        CompetitionsUser::factory()->count(50)->create();
+        CompetitionsUser::factory()->count(20)->create();
     
     }
 }

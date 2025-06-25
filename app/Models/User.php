@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Game;
 use App\Models\Badge;
 use App\Models\Competition;
+use App\Models\ReferralReward;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,6 +56,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Badge::class)
             ->withTimestamps();
+    }
+
+    public function referrals() // Les filleuls de ce user
+    {
+        return $this->hasMany(ReferralReward::class, 'referrer_id');
+    }
+
+    public function referredBy() // Le parrain de ce user
+    {
+        return $this->belongsTo(User::class, 'referred_by');
+    }
+
+    public function referralRewards() // Les récompenses de parrainage reçues
+    {
+        return $this->hasMany(ReferralReward::class, 'referrer_id');
     }
 
     // Scope pour récupérer uniquement les gameurs

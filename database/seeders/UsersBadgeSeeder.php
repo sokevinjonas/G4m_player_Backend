@@ -12,6 +12,6 @@ class UsersBadgeSeeder extends Seeder
      */
     public function run(): void
     {
-        UsersBadge::factory()->count(30)->create();
+        UsersBadge::factory()->count(10)->create();
     }
 }

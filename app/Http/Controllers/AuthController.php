@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Str;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\ReferralReward;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash; 
+use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Requests\Api\LoginRequest;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed', // password_confirmation required
-            'country' => 'nullable|string|max:100',
-            'description' => 'nullable|string',
-        ]);
+        $data = $request->validated();
+
+        // Génère un code unique pour ce user
+        do {
+            $code = strtoupper(Str::random(8));
+        } while (User::where('referral_code', $code)->exists());
 
         $user = User::create([
             'name' => $data['name'],
@@ -26,27 +29,38 @@ class AuthController extends Controller
             'role' => 'gameur',
             'country' => $data['country'] ?? null,
             'description' => $data['description'] ?? null,
+            'referral_code' => $code,
+            // Si code de parrainage fourni, on récupère l'id du parrain
+            'referred_by' => isset($data['referral_code'])
+                ? User::where('referral_code', $data['referral_code'])->value('id')
+                : null,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Si parrainage, crée la récompense
+        if (isset($data['referral_code'])) {
+            $referrerId = User::where('referral_code', $data['referral_code'])->value('id');
+            if ($referrerId) {
+                ReferralReward::create([
+                    'referrer_id' => $referrerId,
+                    'referred_id' => $user->id,
+                ]);
+            }
+        }
 
         return response()->json([
+            'message' => 'User registered successfully',
             'user'  => $user,
-            'token' => $token,
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $data = $request->validated();
 
         $user = User::where('email', $data['email'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Identifiants invalides'], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;

@@ -25,6 +25,10 @@ class UserFactory extends Factory
             'role' => 'gameur',
             'description' => fake()->sentence(),
             'country' => fake()->country(),
+            'avatar' => fake()->imageUrl(),
+            'referral_code' => Str::random(10), // Unique referral code
+            'referred_by' => null, // Initially no referrer
+            'points' => 0, // Initial points
             'remember_token' => Str::random(10),
         ];
     }

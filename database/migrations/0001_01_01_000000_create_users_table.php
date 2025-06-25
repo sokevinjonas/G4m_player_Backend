@@ -20,6 +20,13 @@ return new class extends Migration
             $table->enum('role', ['admin', 'gameur', 'partenaire'])->default('gameur');
             $table->text('description')->nullable();
             $table->string('country')->nullable();
+            $table->string('avatar')->nullable();
+            // 🔁 Parrainage
+            $table->string('referral_code')->unique()->nullable(); // Code de parrainage que ce user peut partager
+            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete(); // ID du parrain
+
+             // 🎯 Points cumulés
+            $table->integer('points')->default(0); // Points obtenus via actions, tournois, badges...
             $table->rememberToken();
             $table->timestamps();
         });

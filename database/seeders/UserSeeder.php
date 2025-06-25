@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
         ]);
 
         // 120 gameurs
-        User::factory(120)->create([
-            'role' => 'gameur',
+        User::factory(12)->create([
+            'role' => 'gameur', 
         ]);
     }
 }
