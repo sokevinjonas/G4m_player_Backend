@@ -23,7 +23,7 @@
 @endif
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body">
-        <form action="{{ route('competitions.store') }}" method="POST" id="competitionForm">
+        <form action="{{ route('competitions.store') }}" method="POST" id="competitionForm" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -116,15 +116,19 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="image" class="form-label">Image (URL ou chemin)</label>
-                    <input type="text" name="image" id="image" class="form-control" value="{{ old('image') }}" placeholder="https://example.com/image.jpg">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                    <small class="form-text text-muted">Formats acceptés: JPG, PNG, GIF (Max: 2MB)</small>
+                    <div id="image-preview" class="mt-2"></div>
                     @error('image')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="video" class="form-label">Vidéo (URL ou chemin)</label>
-                    <input type="text" name="video" id="video" class="form-control" value="{{ old('video') }}" placeholder="https://example.com/video.mp4">
+                    <label for="video" class="form-label">Vidéo</label>
+                    <input type="file" name="video" id="video" class="form-control" accept="video/*">
+                    <small class="form-text text-muted">Formats acceptés: MP4, AVI, MOV (Max: 10MB)</small>
+                    <div id="video-preview" class="mt-2"></div>
                     @error('video')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
@@ -189,6 +193,47 @@
         
         // Écouter les changements sur le select is_online
         document.getElementById('is_online').addEventListener('change', toggleLocationField);
+
+        // Prévisualisation de l'image
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('image-preview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                        <p class="small text-muted mt-1">Fichier: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        // Prévisualisation de la vidéo
+        document.getElementById('video').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('video-preview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <video controls class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                            <source src="${e.target.result}" type="${file.type}">
+                            Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                        <p class="small text-muted mt-1">Fichier: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        });
     });
 
     document.addEventListener('click', function(e) {
