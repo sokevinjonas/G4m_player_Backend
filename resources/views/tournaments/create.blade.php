@@ -88,10 +88,17 @@
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="reward" class="form-label">Récompense <span class="text-danger">*</span></label>
                     <input type="text" name="reward" id="reward" class="form-control" value="{{ old('reward') }}">
                     @error('reward')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="max_participants" class="form-label">Nombre de Participants <span class="text-danger">*</span></label>
+                    <input type="number" name="max_participants" id="max_participants" class="form-control" value="{{ old('max_participants') }}" min="10" required>
+                    @error('max_participants')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>

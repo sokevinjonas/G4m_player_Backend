@@ -9,20 +9,20 @@ class CompetitionController extends Controller
 {
     public function index()
     {
-        return Competition::with('game')->orderBy('date', 'desc')->get();
+        return Competition::with('game', 'players')->orderBy('date', 'desc')->get();
     }
 
     public function show($id)
     {
         $competition = Competition::findOrFail($id);
-        return response()->json($competition->load('game'));
+        return response()->json($competition->load('game', 'players'));
     }
 
-    public function registerToCompetition(Request $request, $id)
+    public function registerToCompetition(int $id)
     {
         $competition = Competition::findOrFail($id);
 
-        $user = $request->user();
+        $user = auth()->user();
 
         if ($competition->players()->where('user_id', $user->id)->exists()) {
             return response()->json(['message' => 'Already registered'], 400);

@@ -27,7 +27,7 @@ class StoreCompetitionsRequest extends FormRequest
             'description' => 'nullable|string',
             'date' => 'required|date|after:now',
             'mode' => 'nullable|in:solo,duo,squad',
-            'max_participants' => 'required|integer|min:1|max:1000',
+            'max_participants' => 'required|integer|min:10|max:1000',
             'current_participants' => 'nullable|integer|min:0',
             'image' => 'nullable|file|mimes:jpeg,jpg,png,gif|max:2048',
             'video' => 'nullable|file|mimes:mp4,avi,mov,wmv|max:10240',

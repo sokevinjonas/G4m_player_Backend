@@ -16,14 +16,14 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::get('competitions', [CompetitionController::class, 'index']);
 Route::get('competitions/{id}', [CompetitionController::class, 'show']);
-Route::post('competitions/{id}/register', [CompetitionController::class, 'registerToCompetition']);
+// Route::post('competitions/{id}/register', [CompetitionController::class, 'registerToCompetition']);
 Route::get('competitions/{id}/players', [CompetitionController::class, 'players']);
 
 // Routes pour gérer les inscriptions aux compétitions
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('checkExistingParticipation', [CompetitionsUserController::class, 'checkExistingParticipation']);
+    Route::get('checkExistingParticipation', [CompetitionsUserController::class, 'checkExistingParticipation']); //ok
     Route::get('competitions-users', [CompetitionsUserController::class, 'index']);
-    Route::post('competitions-users', [CompetitionsUserController::class, 'store']);
+    Route::post('registerToCompetition', [CompetitionsUserController::class, 'store']); // ok
     Route::get('competitions-users/{competitionsUser}', [CompetitionsUserController::class, 'show']);
     Route::delete('competitions-users/{competitionsUser}', [CompetitionsUserController::class, 'destroy']);
     Route::post('logout', [AuthController::class, 'logout']);
