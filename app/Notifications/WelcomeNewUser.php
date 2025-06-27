@@ -38,7 +38,9 @@ class WelcomeNewUser extends Notification implements ShouldQueue
             ->subject('Bienvenue sur la plateforme !')
             ->greeting('Salut ' . $notifiable->name . ' 👋')
             ->line('Merci de t’être inscrit. Nous sommes ravis de t’avoir parmi nous.')
-            ->line('Explore les compétitions, gagne des récompenses et amuse-toi !');
+            ->line('Explore les compétitions, gagne des récompenses et amuse-toi !')
+            ->line('🎁 **Ton code de parrainage personnel :** ' . $notifiable->referral_code)
+            ->line('Partage ce code avec tes amis pour gagner des points bonus !');
     }
 
     /**
