@@ -11,66 +11,61 @@ use App\Http\Requests\Api\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    /**
-     * Update the authenticated user's profile
-     * Awards 10 points if avatar, country, and description are all filled
-     */
+
     public function update(UpdateUserRequest $request): JsonResponse
     {
         $user = $request->user();
-        $oldUser = $user->replicate(); // Copy current state before update
-        
-        // Prepare data for update
+        $oldUser = $user->replicate(); // Snapshot avant mise à jour
+
         $data = $request->validated();
-        
-        // Handle avatar file upload
+
+        // Gérer l'upload de l'avatar si présent
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($user->avatar) {
+            // Supprimer l'ancien avatar si existant
+            if (!empty($user->avatar)) {
                 Storage::disk('public')->delete($user->avatar);
             }
-            
-            // Store new avatar
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $data['avatar'] = $avatarPath;
+
+            // Stocker le nouvel avatar
+            $path = $request->file('avatar')->store('avatars', 'public');
+            if ($path) {
+                $data['avatar'] = $path;
+            }
         }
-        
-        // Hash password if provided
-        if (isset($data['password'])) {
+
+        // Hasher le mot de passe si fourni
+        if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-        
-        // Update user data
+
+        // Mise à jour utilisateur
         $user->update($data);
-        
-        // Check if user just completed their profile (avatar, country, description)
+
+        // Vérification du profil complété
         $profileComplete = $this->checkProfileCompletion($user, $oldUser);
-        
+
         if ($profileComplete) {
             $user->increment('points', 10);
-            $message = 'Profil mis à jour avec succès! Vous avez gagné 10 points pour avoir complété votre profil.';
-        } else {
-            $message = 'Profil mis à jour avec succès!';
         }
-        
-        // Add full avatar URL to response
-        $userData = $user->fresh();
-        if ($userData->avatar) {
-            $userData->avatar_url = Storage::disk('public')->url($userData->avatar);
+
+        // Recharger les données à jour
+        $user = $user->fresh();
+
+        // Ajouter l'URL complète de l'avatar si existant
+        if ($user->avatar) {
+            $user->avatar = Storage::disk('public')->url($user->avatar);
         }
-        
+
         return response()->json([
-            'message' => $message,
-            'user' => $userData,
-            'points_awarded' => $profileComplete ? 10 : 0
+            'message' => $profileComplete
+                ? 'Profil mis à jour avec succès! Vous avez gagné 10 points pour avoir complété votre profil.'
+                : 'Profil mis à jour avec succès!',
+            'user' => $user,
+            'points_awarded' => $profileComplete ? 10 : 0,
         ]);
     }
+
     
-    /**
-     * Check if the user just completed their profile
-     * Returns true if avatar, country, and description are now all filled
-     * and at least one of them was null before
-     */
     private function checkProfileCompletion(User $newUser, User $oldUser): bool
     {
         // Check if profile is now complete
