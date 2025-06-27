@@ -11,10 +11,7 @@ class CompetitionsUser extends Model
 {
     use HasFactory;
     protected $table = 'competitions_users';
-    protected $fillable = [
-        'competition_id', 'user_id', 'points', 'status',
-        'is_winner', 'rank',
-    ];
+    protected $guarded = ['id'];
     public $timestamps = true;
     
     protected $casts = [

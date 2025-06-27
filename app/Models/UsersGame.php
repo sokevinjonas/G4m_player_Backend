@@ -11,9 +11,8 @@ class UsersGame extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-        'user_id', 'game_id', 'total_points',
-    ];
+    protected $guarded = ['id'];
+    
     public $timestamps = true;
     protected $casts = [
         'user_id' => 'integer',

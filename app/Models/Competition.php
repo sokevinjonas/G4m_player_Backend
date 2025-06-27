@@ -11,10 +11,7 @@ class Competition extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-        'game_id', 'title', 'description',
-        'date', 'is_online', 'reward', 'status',
-    ];
+    protected $guarded = ['id'];
 
     public function game()
     {
