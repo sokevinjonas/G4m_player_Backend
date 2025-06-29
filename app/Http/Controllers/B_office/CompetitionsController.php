@@ -44,6 +44,7 @@ class CompetitionsController extends Controller
             'game_id' => $validated['game_id'],
             'title' => $validated['title'],
             'description' => $validated['description'] ?? null,
+            'max_participants' => $validated['max_participants'] ,
             'date' => $validated['date'],
             'mode' => $validated['mode'] ?? null,
             'is_online' => $validated['is_online'],

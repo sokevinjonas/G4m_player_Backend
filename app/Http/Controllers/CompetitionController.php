@@ -18,20 +18,46 @@ class CompetitionController extends Controller
         return response()->json($competition->load('game', 'players'));
     }
 
-    public function registerToCompetition(int $id)
+    public function registerToCompetition(Request $request)
     {
-        $competition = Competition::findOrFail($id);
+        $userId = auth()->id();
+        $competitionId = $request->query('competition_id');
 
-        $user = auth()->user();
+        if (!$competitionId) {
+            return response()->json(['message' => 'Competition ID manquant'], 422);
+        }
 
-        if ($competition->players()->where('user_id', $user->id)->exists()) {
+        $competition = Competition::findOrFail($competitionId);
+
+        if ($competition->players()->where('user_id', $userId)->exists()) {
             return response()->json(['message' => 'Already registered'], 400);
         }
 
-        $competition->players()->attach($user->id, ['points' => 0]);
+        $competition->players()->attach($userId, ['points' => 0]);
 
         return response()->json(['message' => 'Registered successfully']);
     }
+
+    public function UnregistrationToCompetition(Request $request)
+    {
+        $userId = auth()->id();
+        $competitionId = $request->query('competition_id');
+
+        if (!$competitionId) {
+            return response()->json(['message' => 'Competition ID manquant'], 422);
+        }
+
+        $competition = Competition::findOrFail($competitionId);
+
+        if (!$competition->players()->where('user_id', $userId)->exists()) {
+            return response()->json(['message' => 'Not registered'], 400);
+        }
+
+        $competition->players()->detach($userId);
+
+        return response()->json(['message' => 'Unregistered successfully']);
+    }
+
 
     public function players($id)
     {

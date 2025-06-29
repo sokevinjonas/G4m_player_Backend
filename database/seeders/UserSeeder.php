@@ -13,12 +13,12 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin
-        // User::factory()->create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@example.com',
-        //     'role' => 'admin',
-        //     'password' => bcrypt('admin1234'),
-        // ]);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+            'password' => bcrypt('admin1234'),
+        ]);
 
         // Gameurs
         User::factory()->create([
@@ -29,9 +29,9 @@ class UserSeeder extends Seeder
         ]);
 
         // 120 gameurs
-        // User::factory(12)->create([
-        //     'role' => 'gameur',
-        //     'password' => bcrypt('gameur1234'),
-        // ]);
+        User::factory(12)->create([
+            'role' => 'gameur',
+            'password' => bcrypt('gameur1234'),
+        ]);
     }
 }

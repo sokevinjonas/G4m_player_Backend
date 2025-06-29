@@ -19,12 +19,17 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::get('profile', [AuthController::class, 'profile']);
     Route::put('userUpdate', [UserController::class, 'update']);
     Route::get('myFilleuls', [UserController::class, 'getFilleuls']);
+
+    Route::get('checkExistingParticipate', [CompetitionsUserController::class, 'checkExistingParticipation']);
+    // Route sans paramètre dynamique
+    Route::post('registerToCompetition', [CompetitionController::class, 'registerToCompetition']);
+    Route::post('unregisterToCompetition', [CompetitionController::class, 'UnregistrationToCompetition']);
+
 });
 
 
 Route::get('competitions', [CompetitionController::class, 'index']);
 Route::get('competitions/{id}', [CompetitionController::class, 'show']);
-Route::post('competitions/{id}/register', [CompetitionController::class, 'registerToCompetition']);
 Route::get('competitions/{id}/players', [CompetitionController::class, 'players']);
 
 Route::get('games', [GameController::class, 'index']);

@@ -18,7 +18,7 @@ return new class extends Migration
         $table->text('description')->nullable();
         $table->dateTime('date');
         $table->enum('mode', ['solo', 'duo', 'squad'])->nullable(); // Nouveau
-        $table->integer('max_participants')->default(100); // Nouveau
+        $table->integer('max_participants'); // Nouveau
         $table->integer('current_participants')->default(0); // Nouveau
         $table->string('image')->nullable(); 
         $table->string('video')->nullable(); 
