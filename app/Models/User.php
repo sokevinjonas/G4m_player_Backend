@@ -75,6 +75,27 @@ class User extends Authenticatable
         return $this->hasMany(ReferralReward::class, 'referrer_id');
     }
 
+    public function referralRewardsAsReferrer()
+    {
+        return $this->hasMany(ReferralReward::class, 'referrer_id');
+    }
+
+    public function referralRewardsAsReferred()
+    {
+        return $this->hasMany(ReferralReward::class, 'referred_id');
+    }
+
+    /**
+     * Retourne la liste des filleuls (utilisateurs parrainés)
+     */
+    public function getFilleuls()
+    {
+        return $this->referralRewardsAsReferrer()
+            ->with('referred')
+            ->get()
+            ->pluck('referred');
+    }
+
     // Scope pour récupérer uniquement les gameurs
     public function scopeGameurs($query)
     {

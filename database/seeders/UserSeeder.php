@@ -13,16 +13,25 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin
+        // User::factory()->create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@example.com',
+        //     'role' => 'admin',
+        //     'password' => bcrypt('admin1234'),
+        // ]);
+
+        // Gameurs
         User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'role' => 'admin',
-            'password' => bcrypt('admin1234'),
+            'name' => 'Gameur1',
+            'email' => 'gameur1@example.com',
+            'role' => 'gameur',
+            'password' => bcrypt('gameur1234'),
         ]);
 
         // 120 gameurs
-        User::factory(12)->create([
-            'role' => 'gameur', 
-        ]);
+        // User::factory(12)->create([
+        //     'role' => 'gameur',
+        //     'password' => bcrypt('gameur1234'),
+        // ]);
     }
 }

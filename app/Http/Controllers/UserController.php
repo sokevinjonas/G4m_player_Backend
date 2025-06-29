@@ -81,4 +81,19 @@ class UserController extends Controller
         // Award points only if profile is now complete AND was incomplete before
         return $profileNowComplete && $hadIncompleteProfile;
     }
+
+    // Exemple d'utilisation dans un contrôleur
+    public function getFilleuls()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => 'Aucun utilisateur trouvé'], 401);
+        }
+        $filleuls = $user->getFilleuls();
+        
+        return response()->json([
+            'filleuls' => $filleuls,
+            'count' => $filleuls->count()
+        ]);
+    }
 }
