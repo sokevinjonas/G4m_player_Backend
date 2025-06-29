@@ -54,6 +54,7 @@ class CompetitionController extends Controller
         }
 
         $competition->players()->detach($userId);
+        $competition->decrement('current_participants');
 
         return response()->json(['message' => 'Unregistered successfully']);
     }
