@@ -34,7 +34,7 @@ class CompetitionController extends Controller
         }
 
         $competition->players()->attach($userId, ['points' => 0]);
-
+        $competition->increment('current_participants');
         return response()->json(['message' => 'Registered successfully']);
     }
 

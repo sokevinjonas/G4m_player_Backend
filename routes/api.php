@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('registerToCompetition', [CompetitionController::class, 'registerToCompetition']);
     Route::post('unregisterToCompetition', [CompetitionController::class, 'UnregistrationToCompetition']);
 
+    Route::get('is-authenticated', function () {
+        return response()->json(['authenticated' => true]);
+    });
 });
 
 
